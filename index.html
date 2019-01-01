@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>lesson 2</title>
+    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/1.0.0/eon.css" />
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        #outdoorContainer,
+        #indoorContainer,
+        #basementContainer {
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        #outdoorTemp,
+        #outdoorHumid,
+        #outdoorBattery,
+        #indoorTemp,
+        #indoorHumid,
+        #indoorBattery,
+        #basementTemp,
+        #basementHumid,
+        #basementBattery {
+            flex: 1;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div id="outdoorContainer">
+            <div id="outdoorTemp"></div>
+            <div id="outdoorHumid"></div>
+            <div id="outdoorBattery"></div>
+        </div>
+
+        <div id="indoorContainer">
+            <div id="indoorTemp"></div>
+            <div id="indoorHumid"></div>
+            <div id="indoorBattery"></div>
+        </div>
+
+        <div id="basementContainer">
+            <div id="basementTemp"></div>
+            <div id="basementHumid"></div>
+            <div id="basementBattery"></div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var pubnub = new PubNub({
+            subscribeKey: 'sub-c-dd166120-9434-11e8-8ad6-9a5d6aeb6012'
+        });
+
+
+        var eonAxis = {
+            y: { padding: { top: 100, bottom: 100 }, tick: { format: d3.format('.2f') } },
+            x: { type: 'timeseries', tick: { format: '%H:%M' } }
+        }; // Formatting the time stamps along the bottom of the graphs.
+
+
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['outdoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#outdoorTemp',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Outdoor-Temperature': hepp.Temp,
+                    }
+                }
+            }
+        });
+
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['outdoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#outdoorHumid',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Outdoor-Humidity': hepp.Humidity,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['outdoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#outdoorBattery',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Outdoor-Battery': hepp.Battery,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['indoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#indoorTemp',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Indoor-Temperature': hepp.Temp,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['indoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#indoorHumid',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Indoor-Humidity': hepp.Humidity,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['indoor'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#indoorBattery',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Indoor-Battery': hepp.Battery,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['basement'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#basementTemp',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Basement-Temperature': hepp.Temp,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['basement'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#basementHumid',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Basement-Humidity': hepp.Humidity,
+                    }
+                }
+            }
+        });
+
+        eon.chart({
+            pubnub: pubnub,
+            channels: ['basement'], //Where the data will be received from
+            history: true,
+            limit: 30,
+            rate: 60000,
+            generate: {
+                bindto: '#basementBattery',
+                axis: eonAxis,
+                data: {
+                    labels: false
+                }
+            },
+            transform: function (m) {
+                var hepp = JSON.parse(m);
+                return {
+                    eon: {
+                        'Basement-Battery': hepp.Battery,
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

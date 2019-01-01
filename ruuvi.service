@@ -1,0 +1,13 @@
+[Unit]
+Description=Send RuuviTag Data
+After=network.target
+
+[Service]
+ExecStart=/home/pi/go-ruuvi
+WorkingDirectory=/home/pi/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
